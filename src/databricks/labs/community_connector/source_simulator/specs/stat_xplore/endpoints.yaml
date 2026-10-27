@@ -1,0 +1,35 @@
+# DWP Stat-Xplore Open Data API - simulated service.
+#
+# Service root used by the tests: https://stat-xplore.dwp.gov.uk/webapi/rest/v1
+#
+# The connector is generic across Stat-Xplore databases, so the simulator
+# serves a small SYNTHETIC catalogue with two differently-shaped databases
+# (see corpus/datasets.json). Values are generated deterministically and do
+# NOT reproduce real DWP statistics.
+#
+# All endpoints use custom handlers because:
+# * /schema paginates children with a ``Link: rel="next"`` header and is
+#   keyed by percent-encoded Stat-Xplore IDs;
+# * /table is a POST whose body (database, measures, dimensions, recodes)
+#   determines the shape of the nested cube.
+
+endpoints:
+  - path: /webapi/rest/v1/schema
+    method: GET
+    handler: databricks.labs.community_connector.source_simulator.specs.stat_xplore.handlers.stat_xplore_api:serve_schema
+
+  - path: /webapi/rest/v1/schema/{item_id}
+    method: GET
+    handler: databricks.labs.community_connector.source_simulator.specs.stat_xplore.handlers.stat_xplore_api:serve_schema
+
+  - path: /webapi/rest/v1/table
+    method: POST
+    handler: databricks.labs.community_connector.source_simulator.specs.stat_xplore.handlers.stat_xplore_api:serve_table
+
+  - path: /webapi/rest/v1/info
+    method: GET
+    handler: databricks.labs.community_connector.source_simulator.specs.stat_xplore.handlers.stat_xplore_api:serve_info
+
+  - path: /webapi/rest/v1/rate_limit
+    method: GET
+    handler: databricks.labs.community_connector.source_simulator.specs.stat_xplore.handlers.stat_xplore_api:serve_rate_limit

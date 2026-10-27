@@ -1,0 +1,36 @@
+# Example 2 - Personal Independence Payment (a different DWP database).
+#
+# Proves the connector is generic: same connector, same connection, no Python
+# changes - the statistical query is defined entirely in table_configuration
+# (JSON-valued options are passed as strings). IDs are illustrative; confirm
+# them with ``schema_items`` (schema_root = the PIP database) first.
+#
+#   community-connector create_pipeline stat_xplore <pipeline_name> \
+#     -ps pip_pipeline_spec.yaml -c <catalog> -t <schema>
+#
+# DO NOT run without approval: every trigger issues real /table requests.
+connection_name: "<STAT_XPLORE_CONNECTION_NAME>"
+objects:
+  - table:
+      source_table: pip_cases_by_gender
+      destination_table: pip_cases_by_gender_bronze
+      table_configuration:
+        database: "str:database:PIP_Monthly_new"
+        measures: '["str:count:PIP_Monthly_new:V_F_PIP_MONTHLY"]'
+        dimensions: '[["str:field:PIP_Monthly_new:F_PIP_DATE:DATE2"], ["str:field:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX"]]'
+        time_field: "str:field:PIP_Monthly_new:F_PIP_DATE:DATE2"
+        latest_periods: "6"
+        period_batch_size: "3"
+        ingestion_mode: "snapshot"
+  # Same query, persisted as one raw row per /table response (full fidelity).
+  - table:
+      source_table: pip_cases_by_gender_raw
+      destination_table: pip_cases_by_gender_responses
+      table_configuration:
+        database: "str:database:PIP_Monthly_new"
+        measures: '["str:count:PIP_Monthly_new:V_F_PIP_MONTHLY"]'
+        dimensions: '[["str:field:PIP_Monthly_new:F_PIP_DATE:DATE2"], ["str:field:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX"]]'
+        time_field: "str:field:PIP_Monthly_new:F_PIP_DATE:DATE2"
+        latest_periods: "6"
+        period_batch_size: "3"
+        output: "responses"

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lakeflow-community-connectors-stat-xplore"
+version = "0.1.0"
+description = "DWP Stat-Xplore Open Data API connector for Lakeflow Community Connectors"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31.0,<3.0",
+    "lakeflow-community-connectors>=0.1.0,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyspark>=4.2.0.dev0",
+    "pytest>=7.0.0,<9.0",
+]
+
+[tool.setuptools]
+packages = ["databricks.labs.community_connector.sources.stat_xplore"]
+
+[tool.setuptools.package-dir]
+"databricks.labs.community_connector.sources.stat_xplore" = "."
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.md", "*.yaml"]
+
+[tool.pylint.main]
+# _generated_stat_xplore_python_source.py is produced by
+# tools/scripts/merge_python_source.py; lint the sources, not the merge.
+ignore-patterns = ["_generated_.*\\.py"]

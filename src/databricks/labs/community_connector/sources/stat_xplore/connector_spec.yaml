@@ -1,0 +1,93 @@
+# stat_xplore Community Connector Spec
+#
+# DWP Stat-Xplore Open Data API (https://stat-xplore.dwp.gov.uk/webapi/rest/v1).
+# Authentication is a static API key sent in the ``APIKey`` request header.
+# There is deliberately NO ``oauth`` block: the Community Connector CLI
+# therefore creates the UC COMMUNITY connection in ``static`` mode.
+#
+# Connection-level options live here; table-level options must appear in
+# external_options_allowlist so the pipeline can pass them through.
+
+display_name: DWP Stat-Xplore
+connection:
+  parameters:
+    - name: api_key
+      type: string
+      required: true
+      secret: true
+      description: >
+        Stat-Xplore Open Data API key (Stat-Xplore > Account > Open Data API
+        Access). Sent only in the APIKey header to base_url; never logged.
+
+    - name: base_url
+      type: string
+      required: false
+      description: >
+        HTTPS service root. Default
+        ``https://stat-xplore.dwp.gov.uk/webapi/rest/v1``.
+
+    - name: accept_language
+      type: string
+      required: false
+      description: >
+        Optional Accept-Language header for returned labels (see the ``info``
+        table for configured locales). Server default when omitted.
+
+    - name: table_registry
+      type: string
+      required: false
+      description: >
+        Optional JSON object mapping table names to statistical query
+        definitions (database, measures, dimensions, recodes, time_field,
+        periods, latest_periods, period_batch_size, ingestion_mode,
+        lookback_periods, max_periods_per_batch, max_cells_per_request,
+        output). Registry tables are returned by list_tables. Tables can
+        also be defined ad hoc through table_configuration.
+
+    - name: timeout_seconds
+      type: string
+      required: false
+      description: HTTP timeout per request in seconds. Default 120.
+
+    - name: min_request_interval_seconds
+      type: string
+      required: false
+      description: >
+        Minimum spacing between request starts (serial client). Default 2.0,
+        which keeps a continuous run under the 2,000 requests/hour limit.
+
+    - name: max_retries
+      type: string
+      required: false
+      description: >
+        Retries for HTTP 408/429/500/502/503/504 and network errors, honouring
+        Retry-After, else exponential backoff with jitter. Default 5 (max 10).
+
+    - name: retry_max_delay_seconds
+      type: string
+      required: false
+      description: Cap on any single retry sleep in seconds. Default 60.
+
+    - name: rate_limit_reserve
+      type: string
+      required: false
+      description: >
+        When X-RateLimit-Remaining falls to this value the client waits for the
+        reset (if within rate_limit_max_wait_seconds) or fails without
+        advancing checkpoints. Default 25.
+
+    - name: rate_limit_max_wait_seconds
+      type: string
+      required: false
+      description: Longest pre-emptive wait for a rate-limit reset. Default 300.
+
+    - name: max_table_requests_per_run
+      type: string
+      required: false
+      description: >
+        Upper bound on POST /table requests per connector instance (one
+        trigger). Plans that need more are refused before any request is
+        sent. Default 200.
+
+# Per-table options the pipeline may pass through (table_configuration).
+external_options_allowlist: "database,measures,dimensions,recodes,time_field,periods,latest_periods,period_batch_size,ingestion_mode,lookback_periods,max_periods_per_batch,max_cells_per_request,output,schema_root,schema_expand_types,schema_max_depth,schema_max_requests"

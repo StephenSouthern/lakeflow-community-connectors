@@ -1,0 +1,28 @@
+# Example 1 - Universal Credit (People on UC, by month).
+#
+# Bare managed-ingestion spec for:
+#   community-connector create_pipeline stat_xplore <pipeline_name> \
+#     -ps uc_people_pipeline_spec.yaml -c <catalog> -t <schema>
+#
+# ``uc_people_by_month`` is defined in the connection's ``table_registry``
+# (see connection_options.example.json). The discovery tables are included so
+# the first controlled run also captures the catalogue and the rate-limit
+# state. IDs are Stat-Xplore schema IDs; confirm them in ``schema_items``
+# (or the Stat-Xplore UI) before the first run - they are illustrative.
+#
+# DO NOT run without approval: every trigger issues real /table requests.
+connection_name: "<STAT_XPLORE_CONNECTION_NAME>"
+objects:
+  - table:
+      source_table: rate_limit
+  - table:
+      source_table: schema_items
+      destination_table: stat_xplore_schema_uc
+      table_configuration:
+        schema_root: "str:database:UC_Monthly"
+        schema_expand_types: "FIELD,VALUESET"
+        schema_max_depth: "3"
+        schema_max_requests: "40"
+  - table:
+      source_table: uc_people_by_month
+      destination_table: uc_people_by_month_bronze

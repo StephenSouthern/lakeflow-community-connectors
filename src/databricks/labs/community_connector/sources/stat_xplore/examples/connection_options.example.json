@@ -1,0 +1,8 @@
+{
+  "api_key": "<STAT_XPLORE_API_KEY>",
+  "base_url": "https://stat-xplore.dwp.gov.uk/webapi/rest/v1",
+  "min_request_interval_seconds": "2.0",
+  "max_retries": "5",
+  "max_table_requests_per_run": "200",
+  "table_registry": "{\"uc_people_by_month\": {\"database\": \"str:database:UC_Monthly\", \"measures\": [\"str:count:UC_Monthly:V_F_UC_CASELOAD_FULL\"], \"dimensions\": [[\"str:field:UC_Monthly:F_UC_DATE:DATE_NAME\"]], \"time_field\": \"str:field:UC_Monthly:F_UC_DATE:DATE_NAME\", \"ingestion_mode\": \"incremental\", \"latest_periods\": 24, \"lookback_periods\": 3, \"max_periods_per_batch\": 6}}"
+}

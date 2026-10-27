@@ -1,0 +1,78 @@
+{
+  "_comment": "SYNTHETIC Stat-Xplore catalogue for the simulator. IDs follow the documented str:<type>:... pattern; labels and values are invented and are not DWP statistics.",
+  "folders": [
+    {"id": "str:folder:fuc", "label": "Universal Credit (synthetic)", "databases": ["str:database:UC_Monthly"]},
+    {"id": "str:folder:fpip", "label": "Personal Independence Payment (synthetic)", "databases": ["str:database:PIP_Monthly_new"]},
+    {"id": "str:folder:farchive", "label": "Archived (synthetic, empty)", "databases": []}
+  ],
+  "databases": {
+    "str:database:UC_Monthly": {
+      "label": "People on Universal Credit (synthetic)",
+      "annotationKeys": ["0"],
+      "measures": [
+        {"id": "str:count:UC_Monthly:V_F_UC_CASELOAD_FULL", "label": "People on Universal Credit", "type": "COUNT", "base": 5000}
+      ],
+      "fields": [
+        {
+          "id": "str:field:UC_Monthly:F_UC_DATE:DATE_NAME",
+          "label": "Month",
+          "valueset": "str:valueset:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE",
+          "values": [
+            {"id": "str:value:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE:202606", "label": "June 2026"},
+            {"id": "str:value:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE:202607", "label": "July 2026"},
+            {"id": "str:value:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE:202608", "label": "August 2026"},
+            {"id": "str:value:UC_Monthly:F_UC_DATE:DATE_NAME:C_UC_DATE:202609", "label": "September 2026 (p)", "annotationKeys": ["1"]}
+          ]
+        },
+        {
+          "id": "str:field:UC_Monthly:V_F_UC_CASELOAD_FULL:EMPLOYMENT_ID",
+          "label": "Employment indicator",
+          "valueset": "str:valueset:UC_Monthly:V_F_UC_CASELOAD_FULL:EMPLOYMENT_ID:C_UC_EMPLOYMENT",
+          "values": [
+            {"id": "str:value:UC_Monthly:V_F_UC_CASELOAD_FULL:EMPLOYMENT_ID:C_UC_EMPLOYMENT:0", "label": "Not in employment"},
+            {"id": "str:value:UC_Monthly:V_F_UC_CASELOAD_FULL:EMPLOYMENT_ID:C_UC_EMPLOYMENT:1", "label": "In employment"}
+          ]
+        }
+      ],
+      "suppressed_values": [],
+      "annotationMap": {
+        "0": "Synthetic note: figures are rounded.",
+        "1": "Synthetic note: provisional figures, subject to revision."
+      }
+    },
+    "str:database:PIP_Monthly_new": {
+      "label": "PIP Cases with Entitlement (synthetic)",
+      "annotationKeys": ["2"],
+      "measures": [
+        {"id": "str:count:PIP_Monthly_new:V_F_PIP_MONTHLY", "label": "PIP Cases with Entitlement", "type": "COUNT", "base": 700},
+        {"id": "str:mean:PIP_Monthly_new:V_F_PIP_MONTHLY:AWARD_DURATION", "label": "Mean award duration (weeks)", "type": "MEASURE", "base": 40}
+      ],
+      "fields": [
+        {
+          "id": "str:field:PIP_Monthly_new:F_PIP_DATE:DATE2",
+          "label": "Month",
+          "valueset": "str:valueset:PIP_Monthly_new:F_PIP_DATE:DATE2:C_PIP_DATE",
+          "values": [
+            {"id": "str:value:PIP_Monthly_new:F_PIP_DATE:DATE2:C_PIP_DATE:202607", "label": "July 2026"},
+            {"id": "str:value:PIP_Monthly_new:F_PIP_DATE:DATE2:C_PIP_DATE:202608", "label": "August 2026"},
+            {"id": "str:value:PIP_Monthly_new:F_PIP_DATE:DATE2:C_PIP_DATE:202609", "label": "September 2026"}
+          ]
+        },
+        {
+          "id": "str:field:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX",
+          "label": "Gender",
+          "valueset": "str:valueset:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX:C_PIP_SEX",
+          "values": [
+            {"id": "str:value:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX:C_PIP_SEX:F", "label": "Female"},
+            {"id": "str:value:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX:C_PIP_SEX:M", "label": "Male"},
+            {"id": "str:value:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX:C_PIP_SEX:U", "label": "Unknown"}
+          ]
+        }
+      ],
+      "suppressed_values": ["str:value:PIP_Monthly_new:V_F_PIP_MONTHLY:SEX:C_PIP_SEX:U"],
+      "annotationMap": {
+        "2": "Synthetic note: small cells are suppressed for disclosure control."
+      }
+    }
+  }
+}
